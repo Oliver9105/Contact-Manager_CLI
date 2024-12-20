@@ -18,3 +18,14 @@ class Contact:
             )
         """)
         db.conn.commit()
+
+@classmethod
+def get_groups_for_contact(cls, contact_id):
+    db = Database()
+    db.cursor.execute("""
+        SELECT groups.name 
+        FROM groups 
+        JOIN contact_group ON groups.id = contact_group.group_id 
+        WHERE contact_group.contact_id = ?
+    """, (contact_id,))
+    return db.cursor.fetchall()
