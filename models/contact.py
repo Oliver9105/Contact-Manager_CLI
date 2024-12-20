@@ -36,3 +36,10 @@ def get_all_contacts(cls):
     db = Database()
     db.cursor.execute("SELECT * FROM contacts")
     return db.cursor.fetchall()
+
+@classmethod
+def find_contact_by_id(cls, contact_id):
+    db = Database()
+    db.cursor.execute("SELECT * FROM contacts WHERE id = ?", (contact_id,))
+    return db.cursor.fetchone()
+
