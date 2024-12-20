@@ -25,3 +25,8 @@ class Group:
         """, (name,))
         db.conn.commit()
 
+    @classmethod
+    def get_all_groups(cls):
+        db = Database()
+        db.cursor.execute("SELECT * FROM groups")
+        return db.cursor.fetchall()
