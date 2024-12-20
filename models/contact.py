@@ -30,8 +30,9 @@ def get_groups_for_contact(cls, contact_id):
     """, (contact_id,))
     return db.cursor.fetchall()
 
+
 @classmethod
 def get_all_contacts(cls):
-      db = Database()
-      db.cursor.execute("SELECT * FROM contacts")
-      return db.cursor.fetchall()
+    db = Database()
+    db.cursor.execute("SELECT * FROM contacts")
+    return db.cursor.fetchall()
