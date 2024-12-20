@@ -47,3 +47,37 @@ def delete_contact():
         print("Contact deleted successfully.")
     except ValueError:
         print("Invalid ID format. Please enter a number.")
+
+
+def assign_contact_to_group():
+    try:
+        # List all available contacts
+        contacts = Contact.get_all_contacts()
+        if not contacts:
+            print("No contacts available.")
+            return
+
+        print("\nSelect a contact to assign to a group:")
+        for contact in contacts:
+            print(f"ID: {contact[0]} | Name: {contact[1]}")
+
+        contact_id = int(input("Enter the contact ID to assign: ").strip())
+
+        # List all groups
+        groups = Group.get_all_groups()
+        if not groups:
+            print("No groups available.")
+            return
+
+        print("\nSelect a group to assign the contact:")
+        for group in groups:
+            print(f"ID: {group[0]} | Name: {group[1]}")
+
+        group_id = int(input("Enter the group ID to assign to: ").strip())
+
+        # Assign the contact to the selected group
+        ContactGroup.assign_contact_to_group(contact_id, group_id) 
+        print(f"Contact ID {contact_id} has been assigned to group '{group[1]}'.")
+
+    except ValueError:
+        print("Invalid input. Please enter a number.")
