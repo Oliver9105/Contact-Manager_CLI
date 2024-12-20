@@ -37,3 +37,9 @@ class Group:
         db.cursor.execute("SELECT * FROM groups WHERE id = ?", (group_id,))
         return db.cursor.fetchone()
 
+    @classmethod
+    def delete_group(cls, group_name):
+        db = Database()
+        db.cursor.execute("DELETE FROM groups WHERE name = ?", (group_name,))
+        db.conn.commit()
+
