@@ -81,3 +81,54 @@ def assign_contact_to_group():
 
     except ValueError:
         print("Invalid input. Please enter a number.")
+
+# cli.py
+def main():
+    ContactGroup.create_table()
+    Group.create_table()
+    Contact.create_table()
+
+    while True:
+        print("Contact Manager")
+        print("================")
+        print("1. Add Contact")
+        print("2. List Contacts")
+        print("3. Search Contacts")
+        print("4. Delete Contact")
+        print("5. Assign Contact to Group")
+        print("6. Add Group")
+        print("7. List Groups")
+        print("8. Delete Group")
+        print("9. Quit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            add_contact()
+        elif choice == "2":
+            list_contacts()
+        elif choice == "3":
+            search_choice = input("\nSearch Contacts by:\n1. ID\n2. Group\nEnter your choice (1/2): ")
+            if search_choice == "1":
+                search_contact_by_id()
+            elif search_choice == "2":
+                search_contact_by_group()
+            else:
+                print("Invalid choice.")
+        elif choice == "4":
+            delete_contact()
+        elif choice == "5":
+            assign_contact_to_group()
+        elif choice == "6":
+            add_group()
+        elif choice == "7":
+            list_groups()
+        elif choice == "8":
+            delete_group()
+        elif choice == "9":
+            break
+        else:
+            print("Invalid choice. Please try again.")  
+
+if __name__ == "__main__":
+    main()
