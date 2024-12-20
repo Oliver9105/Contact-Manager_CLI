@@ -2,4 +2,5 @@
 from database import Database
 
 class Group:
-    pass
+    def __init__(self, name):
+        self.name = name
