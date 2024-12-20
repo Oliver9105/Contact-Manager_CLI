@@ -38,3 +38,12 @@ def search_contact_by_id():
 def search_contact_by_id(): 
     # (Code for search_contact_by_id() is already included in the previous commit)
     pass
+
+# cli.py
+def delete_contact():
+    try:
+        contact_id = int(input("Enter contact ID to delete: ").strip())
+        Contact.delete_contact(contact_id)
+        print("Contact deleted successfully.")
+    except ValueError:
+        print("Invalid ID format. Please enter a number.")
