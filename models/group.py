@@ -15,3 +15,13 @@ class Group:
             )
         """)
         db.conn.commit()
+
+    @classmethod
+    def add_group(cls, name):
+        db = Database()
+        db.cursor.execute("""
+            INSERT INTO groups (name)
+            VALUES (?)
+        """, (name,))
+        db.conn.commit()
+
