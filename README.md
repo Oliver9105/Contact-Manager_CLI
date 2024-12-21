@@ -94,6 +94,7 @@ Contact John Doe added successfully!
 ### Listing Contacts
 
 ```markdown
+Enter choice: 2
 Contacts:
 ID: 1 | Name: Alice Johnson | Phone: 123-456-7890 | Email: alice.johnson@email.com | Groups: Family
 ID: 2 | Name: Bob Smith | Phone: 234-567-8901 | Email: bob.smith@email.com | Groups: Friends, Work
