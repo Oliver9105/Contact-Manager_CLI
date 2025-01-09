@@ -25,42 +25,54 @@ Before running the application, make sure you have the following installed on yo
 
 1. **Clone the repository**:
 
-   ```sh
-   git clone git@github.com:Oliver9105/Contact-Manager_CLI.git
+   ``sh
+`git clone git@github.com:Oliver9105/Contact-Manager_CLI.git`
+
+   ```
 
    ```
 
 2. **Navigate into the project directory**:
 
-   ```sh
-    cd contact-manager-cli
+   ``sh
+ `cd contact-manager-cli`
+
+   ```
 
    ```
 
 3. **Install dependencies**:
 
-   ```sh
-    pipenv install
+   ``sh
+ `pipenv install`
+
+   ```
 
    ```
 
 4. **Activate the virtual environment**:
 
-   ```sh
-   pipenv shell
+   ``sh
+`pipenv shell`
+
+   ```
 
    ```
 
 5. Run the application:
-   ```sh
-   python cli.py
+   ``sh
+`python cli.py`
+   ```
+
    ```
 
 ## Usage
 
 1. Run the application:
-   ```sh
-   python3 cli.py
+   ``sh
+`python3 cli.py`
+   ```
+
    ```
 
 ```plaintext
@@ -117,8 +129,8 @@ Contact John Doe assigned to group Family.
 
 #select option 3 and the cli prompts you to choose between :
 
-#option1: search by group
-#option2: search by groups
+#option1: `search by contact id`
+#option2: `search by groups`
 
 ```plaintext
 Contact Manager
@@ -253,7 +265,7 @@ ID: 5 | Name: Classmate
 
 If you have any questions, suggestions, or need assistance, please contact:
 
-    Email: <span style="color:blue">Olivercher1000@gmail.com</span>
+    Email:Olivercher1000@gmail.com
 
 License
 
