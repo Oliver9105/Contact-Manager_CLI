@@ -1,112 +1,82 @@
+from models.group import Group
 from database import Database
 
 class Contact:
+    def __init__(self, contact_id, name, phone_number, email):
+        self.id = contact_id
+        self.name = name
+        self.phone_number = phone_number
+        self.email = email
+
     @classmethod
     def create_table(cls):
-        db = Database()
-        db.cursor.execute("""
-            CREATE TABLE IF NOT EXISTS contacts (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                phone_number TEXT NOT NULL,
-                email TEXT NOT NULL
-            )
-        """)
-        db.conn.commit()
+        query = """
+        CREATE TABLE IF NOT EXISTS contacts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            phone_number TEXT NOT NULL,
+            email TEXT NOT NULL
+        )
+        """
+        Database().execute_query(query)
 
     @classmethod
     def add_contact(cls, name, phone_number, email):
-        db = Database()
-        db.cursor.execute("""
-            INSERT INTO contacts (name, phone_number, email)
-            VALUES (?, ?, ?)
-        """, (name, phone_number, email))
-        db.conn.commit()
+        query = "INSERT INTO contacts (name, phone_number, email) VALUES (?, ?, ?)"
+        Database().execute_query(query, (name, phone_number, email))
 
     @classmethod
     def get_all_contacts(cls):
-        db = Database()
-        db.cursor.execute("SELECT * FROM contacts")
-        return db.cursor.fetchall()
+        query = "SELECT * FROM contacts"
+        rows = Database().execute_query(query)
+        return [cls.from_db_row(row) for row in rows]  # Use from_db_row method
 
     @classmethod
     def get_contacts_by_group(cls, group_id):
-        db = Database()
-        db.cursor.execute("""
-            SELECT contacts.id, contacts.name, contacts.phone_number, contacts.email
-            FROM contacts
-            JOIN contact_group ON contacts.id = contact_group.contact_id
-            WHERE contact_group.group_id = ?
-        """, (group_id,))
-        return db.cursor.fetchall()
-
-    @classmethod
-    def find_contact_by_id(cls, contact_id):
-        db = Database()
-        db.cursor.execute("SELECT * FROM contacts WHERE id = ?", (contact_id,))
-        return db.cursor.fetchone()
-
-    @classmethod
-    def delete_contact(cls, contact_id):
-        db = Database()
-        db.cursor.execute("DELETE FROM contacts WHERE id = ?", (contact_id,))
-        db.conn.commit()
+        query = """
+        SELECT c.id, c.name, c.phone_number, c.email
+        FROM contacts c
+        JOIN contact_group cg ON c.id = cg.contact_id
+        WHERE cg.group_id = ?
+        """
+        rows = Database().execute_query(query, (group_id,))
+        return [cls.from_db_row(row) for row in rows] if rows else []  # Return a list of contacts
 
     @classmethod
     def get_groups_for_contact(cls, contact_id):
         db = Database()
-        db.cursor.execute("""
-            SELECT groups.name 
-            FROM groups 
-            JOIN contact_group ON groups.id = contact_group.group_id 
-            WHERE contact_group.contact_id = ?
-        """, (contact_id,))
-        return db.cursor.fetchall()
+        query = """
+        SELECT g.id, g.name 
+        FROM groups g
+        JOIN contact_group cg ON g.id = cg.group_id 
+        WHERE cg.contact_id = ?
+        """
+        rows = db.execute_query(query, (contact_id,))
+        return [Group.from_db_row(row) for row in rows] if rows else []  # Ensure correct Group initialization
+
+    @classmethod
+    def find_contact_by_id(cls, contact_id):
+        query = "SELECT * FROM contacts WHERE id = ?"
+        rows = Database().execute_query(query, (contact_id,))
+        return cls.from_db_row(rows[0]) if rows else None  # Use from_db_row method
+
+    @classmethod
+    def delete_contact(cls, contact_id):
+        query = "DELETE FROM contacts WHERE id = ?"
+        Database().execute_query(query, (contact_id,))
 
     @classmethod
     def assign_to_group(cls, contact_id, group_id):
-        db = Database()
-        db.cursor.execute("""
-            INSERT INTO contact_group (contact_id, group_id)
-            VALUES (?, ?)
-        """, (contact_id, group_id))
-        db.conn.commit()
-
-class Group:
-    @classmethod
-    def create_table(cls):
-        db = Database()
-        db.cursor.execute("""
-            CREATE TABLE IF NOT EXISTS groups (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL
-            )
-        """)
-        db.conn.commit()
+        query = """
+        INSERT INTO contact_group (contact_id, group_id)
+        VALUES (?, ?)
+        """
+        try:
+            Database().execute_query(query, (contact_id, group_id))
+            print(f"Contact {contact_id} has been assigned to group {group_id}.")
+        except Exception as e:
+            print(f"Error assigning contact to group: {e}")
 
     @classmethod
-    def add_group(cls, name):
-        db = Database()
-        db.cursor.execute("""
-            INSERT INTO groups (name)
-            VALUES (?)
-        """, (name,))
-        db.conn.commit()
-
-    @classmethod
-    def get_all_groups(cls):
-        db = Database()
-        db.cursor.execute("SELECT * FROM groups")
-        return db.cursor.fetchall()
-
-    @classmethod
-    def find_group_by_id(cls, group_id):
-        db = Database()
-        db.cursor.execute("SELECT * FROM groups WHERE id = ?", (group_id,))
-        return db.cursor.fetchone()
-
-    @classmethod
-    def delete_group(cls, group_name):
-        db = Database()
-        db.cursor.execute("DELETE FROM groups WHERE name = ?", (group_name,))
-        db.conn.commit()
+    def from_db_row(cls, row):
+        return cls(row[0], row[1], row[2], row[3])
